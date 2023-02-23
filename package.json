@@ -1,0 +1,28 @@
+{
+  "name": "alfreddatabase",
+  "version": "1.0.0",
+  "description": "Database for Alfred",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlfredDiscordBot/AlfredDatabase.git"
+  },
+  "author": "Alvin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlfredDiscordBot/AlfredDatabase/issues"
+  },
+  "homepage": "https://github.com/AlfredDiscordBot/AlfredDatabase#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security"
+  },
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
