@@ -1,10 +1,14 @@
 import express from "express";
 import dotenv from "dotenv";
-import fs from "fs";
+
+import { 
+    writeToFile, 
+    authentication, 
+    createFolder 
+} from "./utilities/functions.js";
 
 
 const app = express();
-const AUTH = process.env.AUTH;
 app.use(express.json());
 dotenv.config()
 
@@ -13,31 +17,39 @@ app.get("/", (req, res) => {
 });
 
 app.post("/update/:folder", (req, res) => {
-    if (req.body.auth === AUTH) {
+    try {
         const folder = req.params.folder;
-        if (!(fs.existsSync(`./${folder}`))) {
-            fs.mkdirSync(`./${folder}`, { recursive: true }, (err) => {
-                if (err) {
-                    console.log(err);
-                }
-            });
-        }
+        authentication();
+        createFolder(folder);
         data = {
             'content': req.body.content,
             'created_at': new Date().getUTCSeconds(),
         }
-        const files = fs.readdirSync(`./${folder}`);
-        const latest = files.length
-        fs.writeFileSync(`./${folder}/${latest}.json`, JSON.stringify(data), (err) => {
-            if (err) {
-                console.log(err);
-            }
-        });
+        writeToFile(folder, data)
         res.send({"message": "Data updated!"})
-    } else {
-        res.send({"message": "Authentication failed!"})
+    } catch (err) {
+        res.send({"message": err.message})
     }
 
+});
+
+app.get("/get/:folder", (req, res) => {
+    try {
+        authentication();
+        const folder = req.params.folder;
+        const files = fs.readdirSync(`./${folder}`);
+        const latest = files.length - 1;
+        if (latest < 0) {
+            throw new Error("No data found!");
+        } else if (!folderExists(folder)) {
+            throw new Error("Folder not found!");
+        }
+        const data = readFile(folder, latest);
+        res.send(data);
+
+    } catch (err) {
+        res.send({"message": err.message})
+    }
 });
 
 app.listen(3000, () => {
