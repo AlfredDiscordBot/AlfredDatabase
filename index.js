@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 app.post("/update/:folder", (req, res) => {
     try {
-        const folder = req.params.folder;
+        const folder = "folder_" + req.params.folder;
         authentication();
         createFolder(folder);
         data = {
@@ -33,12 +33,12 @@ app.post("/update/:folder", (req, res) => {
 
 });
 
-app.get("/get/:folder", (req, res) => {
+app.get("/get/:folder/:index", (req, res) => {
     try {
         authentication();
-        const folder = req.params.folder;
+        const folder = "folder_" + req.params.folder;
         const files = fs.readdirSync(`./${folder}`);
-        const latest = files.length - 1;
+        const latest = (index === undefined) ? files.length - 1: index;
         if (latest < 0) {
             throw new Error("No data found!");
         } else if (!folderExists(folder)) {
