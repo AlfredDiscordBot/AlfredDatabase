@@ -33,6 +33,17 @@ app.post("/update/:folder", (req, res) => {
 
 });
 
+app.get("/create/:folder/", (req, res) => {
+    try {
+        authentication();
+        const folder = "folder_" + req.params.folder;
+        createFolder(folder);
+        res.send({"message": "Folder created!"});
+    } catch {
+        res.send({"message": err.message})
+    }
+});
+
 app.get("/get/:folder/:index", (req, res) => {
     try {
         authentication();
