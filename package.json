@@ -4,6 +4,7 @@
   "description": "Database for Alfred",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "nodemon index.js"
   },
   "repository": {
