@@ -7,10 +7,10 @@ import {
     createFolder 
 } from "./utilities/functions.js";
 
-
+dotenv.config()
+const AUTH = process.env.AUTH;
 const app = express();
 app.use(express.json());
-dotenv.config()
 
 app.get("/", (req, res) => {
     res.send({"message": "Alfred's database is up and running!"})
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 app.post("/update/:folder", (req, res) => {
     try {
         const folder = "folder_" + req.params.folder;
-        authentication();
+        authentication(req, AUTH);
         createFolder(folder);
         data = {
             'content': req.body.content,
@@ -35,18 +35,18 @@ app.post("/update/:folder", (req, res) => {
 
 app.get("/create/:folder/", (req, res) => {
     try {
-        authentication();
+        authentication(req, AUTH);
         const folder = "folder_" + req.params.folder;
         createFolder(folder);
         res.send({"message": "Folder created!"});
-    } catch {
+    } catch (err) {
         res.send({"message": err.message})
     }
 });
 
 app.get("/get/:folder/:index", (req, res) => {
     try {
-        authentication();
+        authentication(req, AUTH);
         const folder = "folder_" + req.params.folder;
         const files = fs.readdirSync(`./${folder}`);
         const latest = (index === undefined) ? files.length - 1: index;

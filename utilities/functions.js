@@ -1,7 +1,5 @@
 import fs from "fs";
 
-const AUTH = process.env.AUTH;
-
 function createFolder(folder) {
     if (!folderExists(folder)) {
         fs.mkdirSync(`./${folder}`, (err) => {
@@ -40,7 +38,7 @@ function writeToFile(folder, data) {
     });
 }
 
-function authentication() {
+function authentication(req, AUTH) {
     const auth = req.headers.authorization;
     if (auth === AUTH) {
         return true;
